@@ -3,11 +3,9 @@ import datetime
 from get_jpy_of_the_day.get_jpy_of_the_day_input_data import InputData
 from get_jpy_of_the_day.get_jpy_of_the_day_output_data import OutputData
 
-from logging import getLogger, StreamHandler, DEBUG, INFO
-logger = getLogger(__name__)
-handler = StreamHandler()
-logger.setLevel(INFO)
-logger.addHandler(handler)
+from logging import getLogger
+
+logger = getLogger("jpyoftheday")
 
 
 class GetJpyOfTheDayUsecase:
