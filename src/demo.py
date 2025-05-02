@@ -44,6 +44,11 @@ while True:
         print("Input Error: your input date seems invalid.  Please try again.")
         continue
     input_data = InputData(input_date.year, input_date.month, input_date.day)
-    controller.handle(input_data)
+    try:
+        controller.handle(input_data)
+    except RuntimeError as e:
+        print("Runtime Error: something bad happened while processing your request.")
+        print(e)
+
     print("")
 

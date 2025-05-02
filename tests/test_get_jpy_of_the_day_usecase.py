@@ -1,4 +1,5 @@
 import unittest
+import datetime
 
 from get_jpy_of_the_day.get_jpy_of_the_day_input_data import InputData
 from get_jpy_of_the_day.get_jpy_of_the_day_usecase import GetJpyOfTheDayUsecase
@@ -23,6 +24,14 @@ class UseCaseTestCase(unittest.TestCase):
     def test_given_new_year_raise_valueerror(self):
         with self.assertRaises(ValueError):
             self.usecase.ensure_market_is_open(2025, 1, 1)
+
+    def test_given_future_date_raise_valueerror(self):
+        future_datetime = datetime.datetime.now() + datetime.timedelta(days=1)
+        future_date = future_datetime.date()
+        if future_date.weekday() >= 5:
+            future_date += datetime.timedelta(days=2)
+        with self.assertRaises(RuntimeError):
+            self.usecase.ensure_market_is_open(future_date.year, future_date.month, future_date.day)
 
     def test_given_weekday_call_exchange_rate_gateway(self):
         input_data = InputData(2025, 4, 25)

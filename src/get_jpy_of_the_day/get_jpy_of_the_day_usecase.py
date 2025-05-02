@@ -26,11 +26,18 @@ class GetJpyOfTheDayUsecase:
             return True
         return False
 
+    def _is_future(self, year:int, month:int, day:int) -> bool:
+        today_date = datetime.datetime.now().date()
+        target_date = datetime.date(year, month, day)
+        return today_date < target_date
+
     def ensure_market_is_open(self, year, month, day):
         if not self._is_weekday(year, month, day):
             raise ValueError("Requested date is weekend.  Market is closed.")
         if self._is_new_year(year, month, day):
             raise ValueError("Requested date is holiday.  Market is closed.")
+        if self._is_future(year, month, day):
+            raise RuntimeError("Requested date is future.  This request is invalid.")
 
     def _get_price_from_gateway(self, input_data:InputData):
         year = input_data.year
